@@ -14,15 +14,16 @@ import {
   SelectValue,
 } from '@/common/components/ui/select';
 import { Button } from '@/common/components/ui/button';
-import { ICardForm } from '../model';
+import useRegisterHook from '../hooks';
+import { FirstStepForm } from '../model';
 
-const RegisterForm = ({
-  form,
-  isAllFilled,
-  inputCPFRef,
-  inputBirthRef,
-  onSubmit,
-}: ICardForm) => {
+type RegisterFormProps = {
+  onSubmit: (data: FirstStepForm) => void;
+};
+
+const RegisterForm = ({ onSubmit }: RegisterFormProps) => {
+  const { form, inputBirthRef, inputCPFRef, isAllFilled } = useRegisterHook();
+
   return (
     <Form {...form}>
       <form
@@ -37,6 +38,18 @@ const RegisterForm = ({
               <FormLabel>Nome completo</FormLabel>
               <FormControl>
                 <Input placeholder="Digite seu nome completo" {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem className="mb-5">
+              <FormLabel>E-mail</FormLabel>
+              <FormControl>
+                <Input placeholder="Digite seu melhor e-mail" {...field} />
               </FormControl>
             </FormItem>
           )}
@@ -64,7 +77,11 @@ const RegisterForm = ({
             <FormItem className="mb-5">
               <FormLabel>Data de nascimento</FormLabel>
               <FormControl>
-                <Input placeholder="DD/MM/AAA" {...field} ref={inputBirthRef} />
+                <Input
+                  placeholder="DD/MM/AAAA"
+                  {...field}
+                  ref={inputBirthRef}
+                />
               </FormControl>
             </FormItem>
           )}
@@ -82,8 +99,12 @@ const RegisterForm = ({
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="male">masculino</SelectItem>
-                  <SelectItem value="female">feminino</SelectItem>
+                  <SelectItem value="male">Masculino</SelectItem>
+                  <SelectItem value="female">Feminino</SelectItem>
+                  <SelectItem value="other">Outro</SelectItem>
+                  <SelectItem value="notAnswer">
+                    Prefiro não informar
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </FormItem>
@@ -91,19 +112,11 @@ const RegisterForm = ({
         />
         <Button
           disabled={!isAllFilled}
-          className="w-full bg-[var(--primary)] mb-5"
+          className="w-full bg-primary"
           type="submit"
         >
-          Enviar código de recuperação
+          Avançar
         </Button>
-        <div className="flex items-center justify-center text-center p-1">
-          <p className="text-sm mr-2">Lembrou sua senha?</p>
-          <span className="text-[var(--primary)] font-medium">Faça login</span>
-        </div>
-        <hr className="my-5" />
-        <p className="text-center text-[var(--muted-foreground)] text-sm">
-          © 2025 Câmara de Vereadores de Florianópolis
-        </p>
       </form>
     </Form>
   );

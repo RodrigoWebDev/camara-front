@@ -1,17 +1,20 @@
 import { Badge } from '@/common/components/ui/badge';
+import { cn } from '../../lib/utils';
 
-type StatusType = `Pendente` | `Confirmado` | `Cancelado`;
+type StatusType = 'confirmed' | 'pending' | 'completed' | 'canceled';
 
 type ScheduleContentProps = {
   title: string;
   date: string;
-  status: string | StatusType;
+  status: StatusType;
 };
 
-const pending =
-  'flex justify-center items-center px-[10px] py-[2px] gap-[10px] rounded-full border border-transparent bg-secondary text-xs font-semibold leading-4 text-foreground font-sans';
-const success =
-  'flex items-center justify-center px-[10px] py-[2px] gap-[10px] rounded-full border border-transparent bg-success text-xs font-semibold leading-4 font-sans';
+const statusMap = {
+  confirmed: 'Confirmado',
+  pending: 'Pendente',
+  completed: 'Concluído',
+  canceled: 'Cancelado',
+};
 
 const ScheduleContent = ({ title, date, status }: ScheduleContentProps) => {
   return (
@@ -25,8 +28,16 @@ const ScheduleContent = ({ title, date, status }: ScheduleContentProps) => {
         </p>
       </div>
       <div>
-        <Badge className={status === 'Pendente' ? pending : success}>
-          {status}
+        <Badge
+          className={cn(
+            'flex items-center justify-center px-[10px] py-[2px] gap-[10px] rounded-full border border-transparent text-xs font-semibold leading-4 font-sans',
+            status === 'pending' && 'bg-background-yellow text-alert',
+            status === 'confirmed' && 'bg-background-blue text-primary',
+            status === 'completed' && 'bg-background-green text-success',
+            status === 'canceled' && 'bg-background-red text-destructive'
+          )}
+        >
+          {statusMap[status]}
         </Badge>
       </div>
     </div>

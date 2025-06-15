@@ -1,54 +1,83 @@
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { parse, isValid } from "date-fns";
-import { cpf } from "cpf-cnpj-validator"
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { parse, format, isValid } from 'date-fns';
 import { useMask } from '@react-input/mask';
-import { z } from "zod"
-import { IFormData } from "../model";
+import { z } from 'zod';
+import { registerUser } from '../services';
+import { cpf } from 'cpf-cnpj-validator';
 
-const useHook = () => {
-    const formSchema = z.object({
-        username: z.string().min(3),
-        CPF: z.string().refine((value) => cpf.isValid(value)),
-        birth: z.string().refine((value) => {
-            const parsedDate = parse(value, "dd/MM/yyyy", new Date());
-            return isValid(parsedDate);
-        }),
-        gender: z.string().refine((val) => ["male", "female"].includes(val))
-    })
+const formSchema = z.object({
+  username: z.string().min(3, 'Nome muito curto'),
+  email: z.string().email('E-mail inválido'),
+  CPF: z.string().refine((v) => cpf.isValid(v), { message: 'CPF inválido' }),
+  birth: z.string().refine(
+    (v) => {
+      const parsed = parse(v, 'dd/MM/yyyy', new Date());
+      return isValid(parsed);
+    },
+    { message: 'Data de nascimento inválida' }
+  ),
+  gender: z
+    .string()
+    .refine((v) => ['male', 'female', 'other', 'notAnswer'].includes(v), {
+      message: 'Gênero inválido',
+    }),
+});
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            username: "",
-            CPF: "",
-            birth: "",
-            gender: ""
-        },
-    })
+type FirstStepFormValues = z.infer<typeof formSchema>;
+type FormValues = FirstStepFormValues & {
+  password: string;
+};
 
-    const username = form.watch("username");
-    const CPF = form.watch("CPF");
-    const birth = form.watch("birth");
-    const gender = form.watch("gender");
-    
-    const isAllFilled = username?.trim() !== "" && CPF?.trim() !== "" && birth?.trim() !== "" && gender?.trim() !== "";
-    
-    const inputBirthRef = useMask({
-        mask: '__/__/____',
-        replacement: { _: /\d/ },
-    });
+export default function useRegisterHook() {
+  const form = useForm<FirstStepFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: '',
+      email: '',
+      CPF: '',
+      birth: '',
+      gender: '',
+    },
+  });
 
-    const inputCPFRef = useMask({
-        mask: '___.___.___-__',
-        replacement: { _: /\d/ },
-    });
+  const username = form.watch('username');
+  const email = form.watch('email');
+  const CPF = form.watch('CPF');
+  const birth = form.watch('birth');
+  const gender = form.watch('gender');
 
-    const onSubmit = (data: IFormData) => {
-        console.log("data: ", data)
+  const isAllFilled = [username, email, CPF, birth, gender].every(
+    (v) => v?.toString().trim() !== ''
+  );
+
+  const inputBirthRef = useMask({
+    mask: '__/__/____',
+    replacement: { _: /\d/ },
+  });
+  const inputCPFRef = useMask({
+    mask: '___.___.___-__',
+    replacement: { _: /\d/ },
+  });
+
+  const onSubmit = async (data: FormValues, handleNext: () => void) => {
+    try {
+      const parsed = parse(data.birth, 'dd/MM/yyyy', new Date());
+      const birth_date = format(parsed, 'yyyy-MM-dd');
+
+      await registerUser({
+        full_name: data.username,
+        email: data.email,
+        password: data.password,
+        document: data.CPF.replace(/[.-]/g, ''),
+        birth_date,
+        gender: data.gender as 'male' | 'female' | 'other' | 'notAnswer',
+      });
+      handleNext();
+    } catch (error: any) {
+      alert(`Erro no cadastro -> ${error}`);
     }
+  };
 
-    return { form, isAllFilled, inputBirthRef, inputCPFRef, onSubmit }
+  return { form, isAllFilled, inputBirthRef, inputCPFRef, onSubmit };
 }
-
-export default useHook

@@ -3,10 +3,14 @@ import { UseFormReturn } from 'react-hook-form';
 
 export interface IFormData {
   username: string;
+  email: string;
   CPF: string;
   birth: string;
   gender: string;
+  password: string;
 }
+
+export type FirstStepForm = Omit<IFormData, 'password'>;
 
 export type TForm = UseFormReturn<IFormData, any, IFormData>;
 

@@ -1,16 +1,16 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import AccountVerificationWarning from '@/common/components/AccountVerificationWarning';
 import DocTextWarning from '@/common/components/DocTextWarning';
 import DocUpload1 from '@/common/components/DocUpload1';
 import DocUploadConfirmation from '@/common/components/DocUploadConfirmation';
 import InfoCard from '@/common/components/InfoCard';
-import UploadProgress from '@/common/components/UploadProgress';
 import SelfieConfirmation from '@/common/components/SelfieConfirmation';
 import EmailValidation from '@/common/components/EmailValidation';
 import FinalConfirmation from '@/common/components/FinalConfirmation';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
+import StepperProgress from '@/common/components/StepperProgress';
 
 const AccountVerification = () => {
   const [step, setStep] = useState(0);
@@ -20,7 +20,14 @@ const AccountVerification = () => {
   const navigate = useNavigate();
 
   const totalSteps = 5;
-  const progress = (step / (totalSteps - 1)) * 100;
+
+  const steps = [
+    { id: 1, title: 'Documento', show: true },
+    { id: 1, title: 'Documento enviado' },
+    { id: 2, title: 'Selfie', show: true },
+    { id: 3, title: 'Confirmação e-mail' },
+    { id: 3, title: 'E-mail', show: true },
+  ];
 
   const nextStep = () => {
     if (step < totalSteps - 1) {
@@ -50,7 +57,7 @@ const AccountVerification = () => {
         <Button
           className="flex h-9 px-3 py-2 justify-center items-center gap-2 rounded-md bg-transparent"
           variant="ghost"
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/perfil')}
         >
           <ArrowLeft className="w-4 h-4" />
           <span className="text-base font-medium leading-6 text-foreground">
@@ -67,7 +74,7 @@ const AccountVerification = () => {
 
           <div className="flex flex-col gap-4 w-full">
             <div className="flex flex-col items-start gap-4 px-6 self-stretch">
-              <UploadProgress progress={progress} />
+              <StepperProgress steps={steps} current={step} />
             </div>
 
             {step === 0 && (

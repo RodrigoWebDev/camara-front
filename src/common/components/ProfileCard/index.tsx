@@ -9,6 +9,8 @@ type ProfileCardProps = {
   memberDate: string;
   lastAccess: string;
   isVerified?: boolean;
+  onLogOut: () => void;
+  onAccountValidation: () => void;
 };
 
 const ProfileCard = ({
@@ -18,9 +20,11 @@ const ProfileCard = ({
   memberDate,
   lastAccess,
   isVerified,
+  onLogOut,
+  onAccountValidation,
 }: ProfileCardProps) => {
   return (
-    <div className="flex flex-col p-6 items-start gap-6 self-stretch rounded-lg border border-input bg-white shadow-sm">
+    <div className="flex flex-col p-6 items-start gap-6 w-full rounded-lg border border-input bg-white shadow-sm">
       <section className="flex flex-col justify-center items-center gap-[6px] self-stretch">
         <Avatar className="w-20 h-20 rounded-full bg-background">
           <AvatarImage src={avatar} />
@@ -28,19 +32,18 @@ const ProfileCard = ({
         <p className="text-2xl font-semibold leading-8 text-card-foreground font-sans">
           {name}
         </p>
-        <div className="flex justify-center items-center gap-4 self-stretch">
-          <p className="text-sm font-normal leading-5 text-muted-foreground font-sans">
-            {email}
-          </p>
 
-          <div
-            className={`flex px-[10px] py-[2px] justify-center items-center gap-1 rounded-full border border-transparent ${isVerified ? `bg-success` : `bg-alert`}`}
-          >
-            <BadgeCheck className="w-3 h-3 text-primary-foreground" />
-            <p className="text-xs font-semibold leading-4 font-sans text-primary-foreground">
-              {isVerified ? `Verificado` : `Não verificado`}
-            </p>
-          </div>
+        <p className="text-sm font-normal leading-5 text-muted-foreground font-sans">
+          {email}
+        </p>
+
+        <div
+          className={`flex px-[10px] py-[2px] justify-center items-center gap-1 rounded-full border border-transparent ${isVerified ? `bg-success` : `bg-alert`}`}
+        >
+          <BadgeCheck className="w-3 h-3 text-primary-foreground" />
+          <p className="text-xs font-semibold leading-4 font-sans text-primary-foreground">
+            {isVerified ? `Verificado` : `Não verificado`}
+          </p>
         </div>
       </section>
 
@@ -55,6 +58,7 @@ const ProfileCard = ({
 
       <section className="flex flex-col items-start gap-2 self-stretch">
         <Button
+          onClick={onAccountValidation}
           variant={'outline'}
           className="flex h-10 px-4 py-2 justify-center items-center gap-2 self-stretch rounded-md border border-input bg-background"
         >
@@ -64,6 +68,7 @@ const ProfileCard = ({
           </p>
         </Button>
         <Button
+          onClick={onLogOut}
           variant={'outline'}
           className="flex h-10 px-4 py-2 justify-center items-center gap-2 self-stretch rounded-md border border-input bg-background text-destructive"
         >

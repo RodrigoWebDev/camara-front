@@ -8,10 +8,11 @@ import {
 import { Input } from '@/common/components/ui/input';
 import { Button } from '@/common/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ILoginForm } from '../model';
-import Logo from '@/../public/Logo.png';
+import useLoginHook from '../hooks';
 
-const LoginForm = ({ form, isAllFilled, onSubmit }: ILoginForm) => {
+const LoginForm = () => {
+  const { form, isAllFilled, onSubmit } = useLoginHook();
+
   return (
     <Form {...form}>
       <form
@@ -20,12 +21,12 @@ const LoginForm = ({ form, isAllFilled, onSubmit }: ILoginForm) => {
       >
         <FormField
           control={form.control}
-          name="CPF"
+          name="login"
           render={({ field }) => (
             <FormItem className="w-full">
-              <FormLabel>CPF ou Matrícula</FormLabel>
+              <FormLabel>CPF ou Email</FormLabel>
               <FormControl>
-                <Input placeholder="Digite apenas números" {...field} />
+                <Input placeholder="Digite seu login" {...field} />
               </FormControl>
             </FormItem>
           )}
@@ -37,12 +38,19 @@ const LoginForm = ({ form, isAllFilled, onSubmit }: ILoginForm) => {
             <FormItem className="w-full">
               <div className="flex justify-between relative">
                 <FormLabel>Senha</FormLabel>
-                <a className="absolute right-0 text-sm font-normal leading-none underline text-right text-muted-foreground">
+                <a
+                  href="/recuperacao"
+                  className="absolute right-0 text-sm font-normal leading-none underline text-right text-muted-foreground"
+                >
                   Esqueceu a senha?
                 </a>
               </div>
               <FormControl>
-                <Input placeholder="Digite sua senha" {...field} />
+                <Input
+                  placeholder="Digite sua senha"
+                  type="password"
+                  {...field}
+                />
               </FormControl>
             </FormItem>
           )}
@@ -61,25 +69,11 @@ const LoginForm = ({ form, isAllFilled, onSubmit }: ILoginForm) => {
         </div>
         <Button
           disabled={!isAllFilled}
-          className="w-full bg-[var(--primary)] "
+          className="w-full bg-primary"
           type="submit"
         >
           Entrar
         </Button>
-        <div className="flex items-center justify-center text-center">
-          <p className="text-sm mr-2">Não tem uma conta?</p>
-          <a className="text-[var(--primary)] font-medium">Cadastre-se</a>
-        </div>
-        <hr className="mt-3 mb-5 w-full" />
-        <img className="w-56 h-12" src={Logo} />
-        <Button variant="ghost">
-          <span className="text-base font-medium leading-6 text-foreground">
-            Política de Privacidade
-          </span>
-        </Button>
-        <p className="text-center text-[var(--muted-foreground)] text-sm">
-          © 2025 Câmara de Vereadores de Florianópolis
-        </p>
       </form>
     </Form>
   );

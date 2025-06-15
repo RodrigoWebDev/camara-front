@@ -5,11 +5,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/common/components/ui/card";
-import { Button } from "@/common/components/ui/button";
+} from '@/common/components/ui/card';
+import { Button } from '@/common/components/ui/button';
 
-import { FileText, Clock, CheckCircle2 } from "lucide-react";
-import StarRating from "../StarRating";
+import { FileText, Clock, CheckCircle2 } from 'lucide-react';
+import StarRating from '../StarRating';
 
 type CustomCardProps = {
   title: string;
@@ -34,12 +34,12 @@ const CustomCard = ({
         <div className="flex justify-between items-start">
           <div className="flex items-center gap-2 self-stretch">
             <FileText className="h-4 w-4 g-0 text-foreground" />
-            <CardTitle className="text-[var(--card-foreground,#09090B)] font-sans text-lg font-semibold leading-[28px]">
+            <CardTitle className="text-card-foreground font-sans text-lg font-semibold leading-[28px]">
               {title}
             </CardTitle>
           </div>
         </div>
-        <CardDescription className="text-[var(--muted-foreground,#71717A)] font-sans text-base font-normal leading-normal">
+        <CardDescription className="text-muted-foreground font-sans text-base font-normal leading-normal">
           {description}
         </CardDescription>
       </CardHeader>

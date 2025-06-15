@@ -4,76 +4,77 @@ import {
   AlertTitle,
 } from '@/common/components/ui/alert';
 import { Button } from '@/common/components/ui/button';
-import { AlertCircle } from 'lucide-react';
+import { cn } from '../lib/utils';
+
+type CustomAlertType = 'alert' | 'destructive' | 'outline' | 'info' | 'success';
 
 type CustomAlertProps = {
-  title?: string;
+  title: string;
   description?: string;
-  Icon?: React.ElementType;
+  Icon: React.ElementType;
+  type?: CustomAlertType;
   isVerify?: boolean;
-  isDestructive?: boolean;
 };
 
-const verifyTitle = 'Verifique sua conta';
-const verifyDescription =
-  'Para garantir a segurança e ter acesso a todos os serviços do portal, verifique sua identidade.';
-const serviceTitle = 'Como solicitar um serviço';
-const serviceDescription =
-  'Navegue pelos serviços disponíveis, clique em "Ver detalhes" para mais informações ou "Solicitar" para iniciar um pedido. Você pode filtrar por categoria ou usar a busca para encontrar serviços específicos.';
-
 const CustomAlert = ({
-  isVerify,
   title,
   description,
   Icon,
-  isDestructive,
+  type = 'info',
+  isVerify = false,
 }: CustomAlertProps) => {
-  const _title = title ? title : isVerify ? verifyTitle : serviceTitle;
-  const _description = description
-    ? description
-    : isVerify
-      ? verifyDescription
-      : serviceDescription;
-
   return (
     <Alert
-      className={`
-      flex flex-col p-4 items-start gap-4 self-stretch rounded-lg bg-[var(--primary-foreground)]
-      ${isVerify && 'border-alert bg-background'}
-      ${isDestructive && 'border border-[var(--destructive)] bg-[var(--destructive-foreground)]'}
-    `}
-      variant={isDestructive ? 'destructive' : 'default'}
+      className={cn(
+        'flex flex-col p-4 items-start gap-4 self-stretch rounded-lg border-primary bg-custom-alert-background',
+        type === 'alert' && 'border-alert bg-yellow-50',
+        type === 'destructive' &&
+          'border border-destructive bg-destructive-foreground',
+        type === 'outline' && 'bg-background border-border',
+        type === 'success' && 'bg-background-green border-none'
+      )}
     >
       <div className="flex flex-row items-start gap-3 self-stretch">
         <div className="pt-1">
-          {Icon ? (
-            <Icon className="h-4 w-4" />
-          ) : (
-            <AlertCircle className="h-4 w-4" />
-          )}
+          <Icon
+            className={cn(
+              'h-4 w-4',
+              type === 'info' && 'text-primary',
+              type === 'alert' && 'text-alert',
+              type === 'destructive' && 'text-destructive',
+              type === 'outline' && 'text-foreground',
+              type === 'success' && 'text-success'
+            )}
+          />
         </div>
 
         <div className="flex flex-col gap-1">
           <AlertTitle
-            className={`font-sans text-base not-italic font-medium leading-6 ${
-              isVerify && 'text-alert'
-            }`}
+            className={cn(
+              'font-sans text-base not-italic font-medium leading-6 text-primary',
+              type === 'alert' && 'text-alert',
+              type === 'destructive' && 'text-destructive',
+              type === 'outline' && 'text-foreground',
+              type === 'success' && 'text-success'
+            )}
           >
-            {_title}
+            {title}
           </AlertTitle>
-
-          <AlertDescription
-            className={`
-              flex-[1_0_0] font-sans text-sm not-italic font-normal leading-5 text-color-[var(--foreground)] 
-              ${isVerify && 'text-alert'}
-              ${isDestructive && 'text-color-[var(--destructive)]'}
-            `}
-          >
-            {_description}
-          </AlertDescription>
+          {description && (
+            <AlertDescription
+              className={cn(
+                'flex-[1_0_0] font-sans text-sm not-italic font-normal leading-5 text-primary',
+                type === 'alert' && 'text-alert',
+                type === 'destructive' && 'text-destructive',
+                type === 'outline' && 'text-foreground',
+                type === 'success' && 'text-success'
+              )}
+            >
+              {description}
+            </AlertDescription>
+          )}
         </div>
       </div>
-
       {isVerify && (
         <div className="flex pl-7 items-center self-stretch">
           <Button
@@ -90,6 +91,3 @@ const CustomAlert = ({
 };
 
 export default CustomAlert;
-
-// Example:
-// <CustomAlert isVerify={true} ></CustomAlert>

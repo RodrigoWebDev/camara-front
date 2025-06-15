@@ -1,43 +1,43 @@
-import StarRating from "@/common/components/StarRating";
+import StarRating from '@/common/components/StarRating';
 
 type RatingCardProps = {
-  titulo: string;
-  data: string;
-  nota: number;
-  comentario: string;
-  resposta?: string;
+  title: string;
+  date: string;
+  rating: number;
+  comment: string;
+  answer?: string;
 };
 
 const RatingCard = ({
-  titulo,
-  data,
-  nota,
-  comentario,
-  resposta,
+  title,
+  date,
+  rating,
+  comment,
+  answer,
 }: RatingCardProps) => {
-  const hasResposta = Boolean(resposta);
+  const hasResposta = Boolean(answer);
 
   return (
     <div className="w-full border border-zinc-200 rounded-lg p-4 bg-white">
-      <div className={`flex ${hasResposta ? "flex-row gap-4" : "flex-col"}`}>
+      <div className={`flex ${hasResposta ? 'flex-row gap-4' : 'flex-col'}`}>
         {/* Solicitação - ocupa toda a largura se não houver resposta */}
         <div
-          className={`${hasResposta ? "w-1/2" : "w-full"} flex flex-col gap-4`}
+          className={`${hasResposta ? 'w-1/2' : 'w-full'} flex flex-col gap-4`}
         >
           <div className="flex justify-between items-start">
             <div>
               <h3 className="text-base leading-6 font-medium text-zinc-950 font-sans">
-                {titulo}
+                {title}
               </h3>
               <p className="text-xs leading-none font-normal text-zinc-500 font-sans">
-                Avaliado em {data}
+                Avaliado em {date}
               </p>
             </div>
-            <StarRating rating={nota} />
+            <StarRating rating={rating} />
           </div>
 
           <div className="min-h-[80px] p-2 px-3 w-full resize-none rounded-md border border-zinc-200 bg-zinc-50 text-sm font-normal text-zinc-500 font-sans">
-            {comentario}
+            {comment}
           </div>
         </div>
 
@@ -48,7 +48,7 @@ const RatingCard = ({
               Resposta da Câmara Municipal
             </p>
             <div className="p-2 px-3 w-full bg-sky-50 text-sm font-normal text-zinc-700 font-sans max-h-[160px] overflow-y-auto">
-              {resposta}
+              {answer}
             </div>
           </div>
         )}

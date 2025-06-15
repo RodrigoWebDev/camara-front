@@ -1,17 +1,15 @@
-import LoginCard from '@/common/components/LoginCard';
+import AuthCard from '@/common/components/AuthCard';
 import LoginForm from '@/features/login/components/LoginForm';
-import useLoginHook from '@/features/login/hooks';
 
 const LoginPage = () => {
-  const { form, isAllFilled, onSubmit } = useLoginHook();
-
   return (
-    <LoginCard
+    <AuthCard
       title="Acesso ao portal"
       description="Entre com suas credenciais para acessar os serviços"
+      isLogin={true}
     >
-      <LoginForm form={form} onSubmit={onSubmit} isAllFilled={isAllFilled} />
-    </LoginCard>
+      <LoginForm />
+    </AuthCard>
   );
 };
 

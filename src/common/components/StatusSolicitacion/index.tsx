@@ -1,112 +1,103 @@
-type StatusSolicitacaoProps = {
+import { Badge } from '@/components/ui/badge';
+import { getStatusBadgeClass } from '../AttedantServiceTable';
+import { statusMap } from '@/pages/attendantServicesPage';
+import { addDays, format, parseISO } from 'date-fns';
+
+type StatusSolicitationProps = {
   status: string;
-  progresso: number;
-  etapaAtual: string;
-  proximaEtapa: string;
-  dataSolicitacao: string;
-  ultimaAtualizacao: string;
-  tempoEstimado: string;
-  previsaoConclusao: string;
+  createdAt: string;
+  updatedAt: string;
+  estimatedTime: number;
 };
 
-const StatusSolicitacao = ({
+const StatusSolicitation = ({
   status,
-  progresso,
-  etapaAtual,
-  proximaEtapa,
-  dataSolicitacao,
-  ultimaAtualizacao,
-  tempoEstimado,
-  previsaoConclusao,
-}: StatusSolicitacaoProps) => {
+  createdAt,
+  updatedAt,
+  estimatedTime,
+}: StatusSolicitationProps) => {
+  const formatDateBR = (dateString?: string) => {
+    if (!dateString) return '';
+    try {
+      return format(parseISO(dateString), 'dd/MM/yyyy');
+    } catch {
+      return '';
+    }
+  };
+
+  const getPrevision = () => {
+    if (!createdAt || !estimatedTime) return '';
+    try {
+      const previsionDate = addDays(parseISO(createdAt), estimatedTime);
+      return format(previsionDate, 'dd/MM/yyyy');
+    } catch {
+      return '';
+    }
+  };
+
   return (
     <div className="p-4 border border-zinc-200 rounded-lg bg-white flex flex-col gap-4 w-full">
-      {/* cabecalho */}
       <div className="flex justify-between items-start">
         <h2 className="text-lg leading-7 font-semibold text-zinc-950 font-sans">
           Status da Solicitação
         </h2>
-        <span className="text-xs leading-4 font-semibold text-zinc-900 font-sans">
-          {status}
-        </span>
+        <Badge className={getStatusBadgeClass(status)}>
+          {statusMap[status]?.label}
+        </Badge>
       </div>
-
-      {/* Progresso */}
       <div className="flex flex-col gap-1">
-        {/* Linha superior com título e percentual */}
         <div className="flex justify-between items-center">
           <span className="text-sm text-zinc-500">Progresso</span>
-          <span className="text-sm leading-5 font-normal text-zinc-500 font-sans">
-            {progresso}%
-          </span>
+          <span className="text-sm text-zinc-500">{0}%</span>
         </div>
-
-        {/* Barra de progresso */}
         <div className="w-full h-2 bg-zinc-100 rounded-full">
           <div
             className="h-2 bg-blue-600 rounded-full"
-            style={{ width: `${progresso}%` }}
-          ></div>
+            style={{ width: `${0}%` }}
+          />
         </div>
       </div>
-
-      {/* etapas */}
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <p className="self-stretch text-sm leading-5 font-normal text-zinc-500 font-sans overflow-hidden text-ellipsis line-clamp-1">
-            Etapa atual
-          </p>
-          <p className="self-stretch text-sm leading-5 font-medium text-zinc-900 font-sans overflow-hidden text-ellipsis line-clamp-1">
-            {etapaAtual}
+          <p className="text-sm text-zinc-500">Etapa atual</p>
+          <p className="text-sm font-medium text-zinc-900">
+            {statusMap[status]?.label}
           </p>
         </div>
         <div>
-          <p className="self-stretch text-sm leading-5 font-normal text-zinc-500 font-sans overflow-hidden text-ellipsis line-clamp-1">
-            Próxima etapa
-          </p>
-          <p className="self-stretch text-sm leading-5 font-medium text-zinc-900 font-sans overflow-hidden text-ellipsis line-clamp-1">
-            {proximaEtapa}
+          <p className="text-sm text-zinc-500">Próxima etapa</p>
+          <p className="text-sm font-medium text-zinc-900">
+            {statusMap[status]?.label}
           </p>
         </div>
       </div>
-
-      {/* datas */}
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <p className="self-stretch text-sm leading-5 font-normal text-zinc-500 font-sans overflow-hidden text-ellipsis line-clamp-1">
-            Data da solicitação
-          </p>
-          <p className="self-stretch text-sm leading-5 font-medium text-zinc-900 font-sans overflow-hidden text-ellipsis line-clamp-1">
-            {dataSolicitacao}
+          <p className="text-sm text-zinc-500">Data da solicitação</p>
+          <p className="text-sm font-medium text-zinc-900">
+            {formatDateBR(createdAt)}
           </p>
         </div>
         <div>
-          <p className="self-stretch text-sm leading-5 font-normal text-zinc-500 font-sans overflow-hidden text-ellipsis line-clamp-1">
-            Última atualização
-          </p>
-          <p className="self-stretch text-sm leading-5 font-medium text-zinc-900 font-sans overflow-hidden text-ellipsis line-clamp-1">
-            {ultimaAtualizacao}
+          <p className="text-sm text-zinc-500">Última atualização</p>
+          <p className="text-sm font-medium text-zinc-900">
+            {formatDateBR(updatedAt)}
           </p>
         </div>
         <div>
-          <p className="self-stretch text-sm leading-5 font-normal text-zinc-500 font-sans overflow-hidden text-ellipsis line-clamp-1">
-            Tempo estimado
-          </p>
-          <p className="self-stretch text-sm leading-5 font-medium text-zinc-900 font-sans overflow-hidden text-ellipsis line-clamp-1">
-            {tempoEstimado}
+          <p className="text-sm text-zinc-500">Tempo estimado</p>
+          <p className="text-sm font-medium text-zinc-900">
+            {estimatedTime > 0 && `${estimatedTime} dias`}
+            {estimatedTime === 1 && `${estimatedTime} dia`}
           </p>
         </div>
         <div>
-          <p className="self-stretch text-sm leading-5 font-normal text-zinc-500 font-sans overflow-hidden text-ellipsis line-clamp-1">
-            Previsão de conclusão
-          </p>
-          <p className="self-stretch text-sm leading-5 font-medium text-zinc-900 font-sans overflow-hidden text-ellipsis line-clamp-1">
-            {previsaoConclusao}
-          </p>
+          <p className="text-sm text-zinc-500">Previsão de conclusão</p>
+          <p className="text-sm font-medium text-zinc-900">{getPrevision()}</p>
         </div>
       </div>
     </div>
   );
 };
 
-export default StatusSolicitacao;
+export default StatusSolicitation;

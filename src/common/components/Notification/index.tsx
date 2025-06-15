@@ -10,7 +10,7 @@ const Notification = ({ hasNotification }: NotificationProps) => {
     <Button variant="ghost" className="relative">
       <Bell />
       {hasNotification && (
-        <span className="w-[6px] h-[6px] rounded-full bg-[var(--destructive)] absolute top-2 right-2"></span>
+        <span className="w-[6px] h-[6px] rounded-full bg-destructive absolute top-2 right-2"></span>
       )}
     </Button>
   );

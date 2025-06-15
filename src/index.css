@@ -6,6 +6,10 @@
 :root {
   --radius: 0.625rem;
   --background: #fafafa;
+  --background-blue: #f0f9ff;
+  --background-green: #f0fdf4;
+  --background-yellow: #fefce8;
+  --background-red: #fef2f2;
   --foreground: #18181b;
   --card: #ffffff;
   --card-foreground: #09090b;
@@ -42,6 +46,9 @@
   --sidebar-ring: #a1a1aa;
   --card-foreground: #09090b;
   --success: #16a34a;
+  --custom-alert-background: #f0f9ff;
+  --custom-yellow: #fefce8;
+  --status-alert-background: #fefce8;
 }
 
 .dark {
@@ -85,6 +92,10 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --color-background: var(--background);
+  --color-background-blue: var(--background-blue);
+  --color-background-green: var(--background-green);
+  --color-background-yellow: var(--background-yellow);
+  --color-background-red: var(--background-red);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
@@ -120,6 +131,9 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-success: var(--success);
+  --color-custom-alert-background: var(--custom-alert-background);
+  --color-custom-yellow: var(--custom-yellow);
+  --color-status-alert-background: var(--status-alert-background);
 }
 
 @layer base {

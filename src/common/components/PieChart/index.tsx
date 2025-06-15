@@ -29,6 +29,7 @@ type PieChartCardProps = {
   description: string;
   data: ChartData[];
   height?: number;
+  className?: string;
 };
 
 type ChartConfig = {
@@ -41,6 +42,7 @@ const PieChartCard = ({
   description,
   data,
   height,
+  className,
 }: PieChartCardProps) => {
   const chartConfig = data.reduce<Record<string, ChartConfig>>((acc, item) => {
     acc[item.name] = { label: item.label, color: item.fill };
@@ -48,7 +50,7 @@ const PieChartCard = ({
   }, {});
 
   return (
-    <Card className="flex flex-col">
+    <Card className={`flex flex-col ${className}`}>
       <CardHeader className="items-center pb-0">
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
@@ -78,7 +80,10 @@ const PieChartCard = ({
                 }
               />
             </Pie>
-            <ChartLegend content={<ChartLegendContent />} />
+            <ChartLegend
+              content={<ChartLegendContent />}
+              className="hidden md:flex"
+            />
           </PieChart>
         </ChartContainer>
       </CardContent>

@@ -1,8 +1,5 @@
-import SearchInput from '@/common/components/SearchInput';
-import Notification from '@/common/components/Notification';
 import { Button } from '@/components/ui/button';
 import {
-  Check,
   Settings,
   Download,
   Users,
@@ -73,23 +70,14 @@ const Manager = () => {
   ];
 
   return (
-    <div>
-      <section className="h-20 flex justify-between items-center px-4 border-b border-[var(--border)]">
-        <SearchInput placeholder="Buscar atendimento, cidadão ou protocolo" />
-        <div className="flex gap-4">
-          <Notification hasNotification={true} />
-          <Button variant="ghost">
-            <Check className="text-[var(--primary)]" />
-          </Button>
-        </div>
-      </section>
+    <div className="flex flex-col w-full min-h-screen border-l bg-background">
       <div className="flex flex-col gap-8 pt-8 p-4">
         <section className="flex items-end justify-between">
           <div>
-            <h1 className="text-[var(--card-foreground)] font-sans text-2xl font-semibold leading-8">
+            <h1 className="text-card-foreground font-sans text-2xl font-semibold leading-8">
               Dashboard
             </h1>
-            <p className="text-[var(--muted-foreground)] font-sans font-normal leading-6">
+            <p className="text-muted-foreground font-sans font-normal leading-6">
               Visão geral do desempenho do sistema e métricas-chave
             </p>
           </div>
@@ -141,7 +129,7 @@ const Manager = () => {
           />
         </section>
         <section>
-          <h2 className="text-[var(--card-foreground)] font-sans text-lg font-semibold leading-7 mb-4">
+          <h2 className="text-card-foreground font-sans text-lg font-semibold leading-7 mb-4">
             Alertas do sistema
           </h2>
           <div className="grid grid-cols-2 gap-4">
@@ -149,13 +137,13 @@ const Manager = () => {
               title="Tempo de espera elevado"
               description='O tempo médio de espera para o serviço "Denúncia" está 30% acima do normal. Recomenda-se alocar mais recursos.'
               Icon={TriangleAlert}
-              isDestructive={true}
+              type="destructive"
             />
             <CustomAlert
               title="Queda na satisfação"
               description='O serviço "Solicitação de Documentos" teve uma queda de 15% na satisfação nos últimos 7 dias.'
               Icon={TriangleAlert}
-              isDestructive={true}
+              type="destructive"
             />
             <CustomAlert
               title="Alto volume de atendimentos"
@@ -170,7 +158,7 @@ const Manager = () => {
           </div>
         </section>
         <section>
-          <h2 className="text-[var(--card-foreground)] font-sans text-lg font-semibold leading-7 mb-4">
+          <h2 className="text-card-foreground font-sans text-lg font-semibold leading-7 mb-4">
             Alertas do sistema
           </h2>
           <div className="grid grid-cols-2 gap-4">
